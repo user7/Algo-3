@@ -8,13 +8,14 @@ public class QueueImpl<E> implements Queue<E>{
     protected int tail;
     protected int head;
 
-    private final int HEAD_DEFAULT = 0;
-    private final int TAIL_DEFAULT = -1;
-
     public QueueImpl(int maxSize) {
-        this.data = (E[])new Object[maxSize];
-        head = HEAD_DEFAULT;
-        tail = TAIL_DEFAULT;
+        if (maxSize < 1) {
+            throw new IllegalArgumentException();
+        }
+        data = (E[])new Object[maxSize];
+        size = 0;
+        tail = 0;
+        head = inc(tail); // important when maxSize <= 1
     }
 
     @Override
@@ -22,12 +23,8 @@ public class QueueImpl<E> implements Queue<E>{
         if (isFull()) {
             return false;
         }
-
-        if (tail == data.length - 1) {
-            tail = TAIL_DEFAULT;
-        }
-
-        data[++tail] = value;
+        tail = inc(tail);
+        data[tail] = value;
         size++;
         return true;
     }
@@ -37,7 +34,9 @@ public class QueueImpl<E> implements Queue<E>{
         if (isEmpty()) {
             return null;
         }
-        E value = data[head++];
+        E value = data[head];
+        data[head] = null;
+        head = inc(head);
         size--;
         return value;
     }
@@ -70,13 +69,20 @@ public class QueueImpl<E> implements Queue<E>{
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("[");
-        for (int i = head; i <= tail; i++) {
-            sb.append(data[i]);
-            if (i != tail) {
-                sb.append(", ");
+        if (!isEmpty()) {
+            for (int i = head; ; i = inc(i)) {
+                sb.append(data[i]);
+                if (i == tail) {
+                    break;
+                } else {
+                    sb.append(", ");
+                }
             }
         }
-        sb.append("]");
-        return sb.toString();
+        return sb.append("]").toString();
+    }
+
+    private int inc(int i) {
+        return i + 1 == data.length ? 0 : i + 1;
     }
 }
