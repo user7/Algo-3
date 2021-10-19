@@ -17,21 +17,4 @@ public interface LinkedList<E> extends Iterable<E> {
     void display();
 
     E getFirst();
-
-    class Node<E> {
-        E item;
-        Node<E> next;
-        Node<E> prev;
-
-        public Node(E item, Node<E> next) {
-            this.item = item;
-            this.next = next;
-        }
-
-        public Node(E item, Node<E> next, Node<E> prev) {
-            this.item = item;
-            this.next = next;
-            this.prev = prev;
-        }
-    }
 }
