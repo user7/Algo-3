@@ -2,15 +2,22 @@ package geekbrains.lesson4.test;
 
 import geekbrains.lesson4.*;
 
+import java.util.function.Supplier;
+
 public class LinkedListImplTest {
-    public static void run() {
+    private static Supplier<LinkedList<Integer>> supplier = null;
+    private static String testSet;
+
+    public static void run(String testSet, Supplier<LinkedList<Integer>> supplier) {
+        LinkedListImplTest.supplier = supplier;
+        LinkedListImplTest.testSet = testSet;
         testInsertRemove();
         testContains();
         testForeach();
     }
 
     static void testInsertRemove() {
-        LinkedList<Integer> list = new LinkedListImpl<Integer>();
+        LinkedList<Integer> list = supplier.get();
 
         insertAll(list, 1, 2, 3, 4, 5);
         checkList("insert front 1..5", list, "[5, 4, 3, 2, 1]");
@@ -30,7 +37,7 @@ public class LinkedListImplTest {
     }
 
     static void testContains() {
-        LinkedList<Integer> list = new LinkedListImpl<Integer>();
+        LinkedList<Integer> list = supplier.get();
         insertAll(list, 5, 4, 3, 2, 1);
         for (int i = 0; i <= 6; ++i) {
             testContainsOne(list, i, i >= 1 && i <= 5);
@@ -38,11 +45,10 @@ public class LinkedListImplTest {
     }
 
     static void testForeach() {
-        StringBuilder sb = new StringBuilder("");
-        LinkedList<Integer> list = new LinkedListImpl<Integer>();
+        LinkedList<Integer> list = supplier.get();
         insertAll(list, 1, 2, 3, 4, 5);
         Integer v = 0;
-        LinkedList<Integer> list2 = new LinkedListImpl<Integer>();
+        LinkedList<Integer> list2 = supplier.get();
         for (Integer e : list) {
             list2.insertFirst(e);
         }
@@ -53,9 +59,9 @@ public class LinkedListImplTest {
         boolean got = list.contains(i);
         String name = String.format("%s contains %d", list.toString(), i);
         if (got != expected) {
-            System.out.printf("failed %s: expected %b got %b\n", name, list.toString(), i, expected, got);
+            System.out.printf("%s failed %s: expected %b got %b\n", testSet, name, expected, got);
         } else {
-            System.out.printf("passed %s = %b\n", name, expected);
+            System.out.printf("%s passed %s = %b\n", testSet, name, expected);
         }
     }
 
@@ -67,9 +73,9 @@ public class LinkedListImplTest {
     static <E> void checkList(String test, LinkedList<E> list, String expected) {
         String got = list.toString();
         if (!got.equals(expected)) {
-            System.out.printf("failed %s: expected %s, got %s\n", test, expected, got);
+            System.out.printf("%s failed %s: expected %s, got %s\n", testSet, test, expected, got);
         } else {
-            System.out.printf("passed %s = %s\n", test, expected);
+            System.out.printf("%s passed %s = %s\n", testSet, test, expected);
         }
     }
 }
