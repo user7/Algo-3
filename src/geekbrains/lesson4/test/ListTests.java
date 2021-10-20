@@ -51,7 +51,8 @@ public class ListTests {
         // тесты интерфейса TwoSideLinkedList прогоняются только для TwoSideLinkedListImpl
         var testSecond = List.of(
                 "+l 1; ?= [1]; +l 2; ?= [1, 2]; +l 3; ?= [1, 2, 3]", // insertLast
-                ":= [1, 2, 3]; ?l 3; r 3 1; ?l 2; r 2 1; ?l 1; r 1 1; ?l" // getLast
+                ":= [1, 2, 3]; ?l 3; r 3 1; ?l 2; r 2 1; ?l 1; r 1 1; ?l", // getLast
+                ":= [7, 8]; -l 8; ?= [7]; -l 7; ?= []; -l" // removeLast
         );
         var dl = testSecond.stream().map((test) -> Arguments.arguments("DL", test));
 
@@ -139,8 +140,10 @@ public class ListTests {
                 return safeCallI("getFirst", () -> list.getFirst(), a1);
             case "?l":
                 return safeCallI("getLast", () -> d_list.getLast(), a1);
-            case "+l": //TODO removeLast
+            case "+l":
                 return safeCallV("insertLast", () -> d_list.insertLast(a1));
+            case "-l":
+                return safeCallI("insertLast", () -> d_list.removeLast(), a1);
             case "?..": // foreach
                 var data = new StringBuilder("");
                 return safeCallS("forEach", () -> {

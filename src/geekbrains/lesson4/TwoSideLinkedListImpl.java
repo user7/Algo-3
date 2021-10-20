@@ -63,6 +63,9 @@ public class TwoSideLinkedListImpl<E> implements TwoSideLinkedList<E> {
     }
 
     @Override
+    public E removeLast() { return removeNode(root.prev).item; }
+
+    @Override
     public E getLast() {
         return root.prev.item;
     }
