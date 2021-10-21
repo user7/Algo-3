@@ -241,4 +241,27 @@ public class TreeImpl<E extends Comparable<? super E>> implements Tree<E> {
         System.out.print(current.getValue() + " ");
         inOrder(current.getRightChild());
     }
+
+    public static class Height {
+        Integer min = null;
+        Integer max = null;
+    }
+
+    public Height heightMinMax() {
+        var h = new Height();
+        heightMinMaxAux(h, 0, root);
+        return h;
+    }
+
+    private void heightMinMaxAux(Height h, int curHeight, Node<E> node) {
+        if (node == null) {
+            if (h.min == null || h.min > curHeight)
+                h.min = curHeight;
+            if (h.max == null || h.max < curHeight)
+                h.max = curHeight;
+        } else {
+            heightMinMaxAux(h, curHeight + 1, node.getLeftChild());
+            heightMinMaxAux(h, curHeight + 1, node.getRightChild());
+        }
+    }
 }
