@@ -1,12 +1,22 @@
 package geekbrains.lesson7;
 
+import java.util.List;
+
 public interface Graph {
 
     void addVertex(String label);
 
-    boolean addEdge(String startLabel, String secondLabel, String... others);
+    String getVertex(int i);
 
-    boolean addEdge(String startLabel, String secondLabel);
+    boolean addEdge(String startLabel, String secondLabel, int weight);
+
+    int getWeight(String firstLabel, String secondLabel);
+
+    List<String> shortestPath(String startLabel, String finishLabel);
+
+    boolean hasVertex(String label);
+
+    int indexOf(String label);
 
     int getSize();
 
