@@ -7,7 +7,7 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        DoubleHashTable<Object, Object> hashTable = new DoubleHashTable(5);
+        HashTable<Object, Object> hashTable = new HashTableChainingImpl<>(10);
         hashTable.put(new Product(1, "Orange"), 150);
         hashTable.put(new Product(77, "Banana"), 100);
         hashTable.put(new Product(67, "Carrot"), 228);
